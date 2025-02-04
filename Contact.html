@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Contact Us</h2>
+    <form id="contact-form">
+        <input type="text" id="user_name" placeholder="Your Name" required>
+        <input type="email" id="user_email" placeholder="Your Email" required>
+        <textarea id="message" rows="4" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+    <p id="status"></p>
+</div>
+
+<script>
+    (function(){
+        emailjs.init("J4dIgZ-LzMGvbf7tC"); // Aapka EmailJS Public Key
+
+        document.getElementById("contact-form").addEventListener("submit", function(event){
+            event.preventDefault();
+
+    let params = {
+    user_name: document.getElementById("user_name").value,
+    user_email: document.getElementById("user_email").value,
+    message: document.getElementById("message").value
+};
+
+            emailjs.send("service_3af6kd6", "template_ldrnx7n", params)
+                .then(function(response) {
+                    document.getElementById("status").innerHTML = "Message sent successfully!";
+                    document.getElementById("status").style.color = "green";
+                    document.getElementById("contact-form").reset();
+                }, function(error) {
+                    document.getElementById("status").innerHTML = "Failed to send message. Try again!";
+                    document.getElementById("status").style.color = "red";
+                });
+        });
+    })();
+</script>
+
+</body>
+</html>
