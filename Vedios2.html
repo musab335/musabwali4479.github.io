@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>|
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Movie Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000; /* Black background for better movie experience */
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+        .video-container {
+            width: 100%;
+            max-width: 1200px; /* Increased width */
+            margin: auto;
+            background: black;
+            padding: 0;
+            border-radius: 10px;
+        }
+        h1 {
+            color: #fff; /* White text for better contrast */
+            padding: 20px;
+        }
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 650px; /* Increased height */
+            margin-bottom: 10px;
+            background: black;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 0px; /* Remove rounded borders */
+        }
+        .video-input {
+            margin-top: 20px;
+            display: none;
+        }
+        input {
+            width: 60%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        .add-btn {
+            background: green;
+        }
+        .add-btn:hover {
+            background: darkgreen;
+        }
+        .delete-btn {
+            background: red;
+        }
+        .delete-btn:hover {
+            background: darkred;
+        }
+        .login-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .video-number {
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+            margin-bottom: 10px;
+        }
+        @media (max-width: 768px) {
+            .video-wrapper {
+                height: 500px; /* Adjusted height for smaller screens */
+            }
+        }
+        @media (max-width: 480px) {
+            .video-wrapper {
+                height: 400px; /* Further adjusted height for mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Wali Movies World</h1>
+
+    <div class="video-container" id="videoContainer">
+        <!-- Movies will be added here dynamically -->
+    </div>
+
+    <div class="video-input">
+        <input type="text" id="videoLink" placeholder="Paste MovieBox Link Here">
+        <button class="add-btn" onclick="addVideo()">Add Movie</button>
+    </div>
+
+    <div class="login-container">
+        <input type="password" id="adminPass" placeholder="Enter Admin Password">
+        <button onclick="checkAdmin()">Login as Admin</button>
+    </div>
+
+    <div id="deleteSection" style="display:none; margin-top: 20px;">
+        <input type="text" id="videoNumber" placeholder="Enter Movie # to Delete">
+        <button class="delete-btn" onclick="deleteVideoByNumber()">Delete Movie</button>
+    </div>
+
+    <script>
+        let adminPassword = "musabwali4479"; // Change this to your password
+
+        function checkAdmin() {
+            let inputPass = document.getElementById("adminPass").value;
+            if (inputPass === adminPassword) {
+                document.querySelector(".video-input").style.display = "block";
+                document.querySelector(".login-container").style.display = "none";
+                document.getElementById("deleteSection").style.display = "block";
+                displayVideos();
+            } else {
+                alert("Wrong Password!");
+            }
+        }
+
+        function addVideo() {
+            let link = document.getElementById("videoLink").value;
+
+            if (link.startsWith("https://v.moviebox.ng/")) {
+                saveVideos(link);
+                displayVideos();
+            } else {
+                alert("Invalid MovieBox Link!");
+            }
+        }
+
+        function saveVideos(embedURL) {
+            let videos = JSON.parse(localStorage.getItem("savedVideos")) || [];
+            videos.unshift(embedURL);
+            localStorage.setItem("savedVideos", JSON.stringify(videos));
+        }
+
+        function displayVideos() {
+            let videos = JSON.parse(localStorage.getItem("savedVideos")) || [];
+            let videoContainer = document.getElementById("videoContainer");
+            videoContainer.innerHTML = "";
+
+            videos.forEach((url, index) => {
+                let wrapperDiv = document.createElement("div");
+                wrapperDiv.classList.add("video-wrapper");
+
+                let iframe = document.createElement("iframe");
+                iframe.src = url;
+                iframe.frameBorder = "0";
+                iframe.allowFullscreen = true;
+
+                let numberText = document.createElement("div");
+                numberText.classList.add("video-number");
+                numberText.innerText = `Movie #${index + 1}`;
+
+                wrapperDiv.appendChild(numberText);
+                wrapperDiv.appendChild(iframe);
+                videoContainer.appendChild(wrapperDiv);
+            });
+        }
+
+        function deleteVideoByNumber() {
+            let videoNumber = document.getElementById("videoNumber").value;
+            let videos = JSON.parse(localStorage.getItem("savedVideos")) || [];
+
+            if (videoNumber.startsWith("Movie #")) {
+                videoNumber = videoNumber.split("#")[1].trim();
+            }
+
+            if (videoNumber >= 1 && videoNumber <= videos.length) {
+                videos.splice(videoNumber - 1, 1);
+                localStorage.setItem("savedVideos", JSON.stringify(videos));
+                displayVideos();
+                alert("Movie deleted successfully!");
+            } else {
+                alert("Invalid movie number!");
+            }
+        }
+
+        window.onload = displayVideos;
+    </script>
+
+</body>
+</html>
