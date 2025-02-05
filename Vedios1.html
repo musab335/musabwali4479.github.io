@@ -7,46 +7,57 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #000; /* بلیک بیک گراؤنڈ */
             text-align: center;
-            padding: 20px;
+            padding: 0;
+            margin: 0;
         }
+
         .video-container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
-        }
-        .video-wrapper {
-            position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0;
-            margin-bottom: 20px;
+            max-width: 100vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 0;
+            margin: 0;
         }
+
+        .video-wrapper {
+            width: 100%;
+            max-width: 100vw;
+            height: 90vh; /* ویڈیو کو تقریباً فل اسکرین کریں */
+            position: relative;
+            background: black;
+        }
+
         .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            border-radius: 8px;
+            border: none;
         }
-        .video-input {
+
+        .video-number {
+            display: none; /* ویڈیو نمبر کو ہٹا دیا گیا */
+        }
+
+        .video-input, .login-container, #deleteSection {
+            text-align: center;
             margin-top: 20px;
-            display: none;
         }
+
         input {
             width: 60%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 16px;
         }
+
         button {
             padding: 10px 20px;
             border: none;
@@ -55,58 +66,59 @@
             border-radius: 5px;
             cursor: pointer;
             margin-top: 5px;
+            transition: background 0.3s, transform 0.2s;
         }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
         .add-btn {
             background: green;
         }
-        .add-btn:hover {
-            background: darkgreen;
-        }
+
         .delete-btn {
             background: red;
         }
-        .delete-btn:hover {
-            background: darkred;
+
+        .login-container input {
+            width: 50%;
         }
-        .login-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .video-number {
-            font-weight: bold;
-            font-size: 18px;
-            color: #444;
-            margin-bottom: 10px;
+
+        /* موبائل کے لیے */
+        @media (max-width: 768px) {
+            .video-wrapper {
+                height: 50vh; /* موبائل پر ویڈیو کا سائز تھوڑا کم کریں */
+            }
+            input {
+                width: 80%;
+            }
         }
     </style>
 </head>
 <body>
 
-    <h1>wali-musucs-world</h1>
-
     <div class="video-container" id="videoContainer">
-        <!-- Videos will be added here dynamically -->
+        <!-- ویڈیوز یہاں آئیں گی -->
     </div>
 
-    <div class="video-input">
+    <div class="video-input" style="display:none;">
         <input type="text" id="videoLink" placeholder="Paste YouTube Link Here">
         <button class="add-btn" onclick="addVideo()">Add Video</button>
     </div>
 
-    <!-- Admin Password Section moved to the end -->
     <div class="login-container">
         <input type="password" id="adminPass" placeholder="Enter Admin Password">
         <button onclick="checkAdmin()">Login as Admin</button>
     </div>
 
-    <div id="deleteSection" style="display:none; margin-top: 20px;">
-        <!-- Update to display only video number -->
+    <div id="deleteSection" style="display:none;">
         <input type="text" id="videoNumber" placeholder="Enter Video # to Delete">
-        <button onclick="deleteVideoByNumber()">Delete Video</button>
+        <button class="delete-btn" onclick="deleteVideoByNumber()">Delete Video</button>
     </div>
 
     <script>
-        let adminPassword = "musabwali4479"; // Change this to your password
+        let adminPassword = "musabwali4479";
 
         function checkAdmin() {
             let inputPass = document.getElementById("adminPass").value;
@@ -114,7 +126,7 @@
                 document.querySelector(".video-input").style.display = "block";
                 document.querySelector(".login-container").style.display = "none";
                 document.getElementById("deleteSection").style.display = "block";
-                displayVideos(); // Show videos after admin login
+                displayVideos();
             } else {
                 alert("Wrong Password!");
             }
@@ -141,16 +153,16 @@
 
         function saveVideos(embedURL) {
             let videos = JSON.parse(localStorage.getItem("savedVideos")) || [];
-            videos.unshift(embedURL); // Naye video ko top par add karna
+            videos.unshift(embedURL);
             localStorage.setItem("savedVideos", JSON.stringify(videos));
         }
 
         function displayVideos() {
             let videos = JSON.parse(localStorage.getItem("savedVideos")) || [];
             let videoContainer = document.getElementById("videoContainer");
-            videoContainer.innerHTML = ""; // Purane content ko hatao taake new list aaye
+            videoContainer.innerHTML = "";
 
-            videos.forEach((url, index) => {
+            videos.forEach(url => {
                 let wrapperDiv = document.createElement("div");
                 wrapperDiv.classList.add("video-wrapper");
 
@@ -159,12 +171,6 @@
                 iframe.frameBorder = "0";
                 iframe.allowFullscreen = true;
 
-                // Video number
-                let numberText = document.createElement("div");
-                numberText.classList.add("video-number");
-                numberText.innerText = `Video #${index + 1}`; // Show video number
-
-                wrapperDiv.appendChild(numberText);
                 wrapperDiv.appendChild(iframe);
                 videoContainer.appendChild(wrapperDiv);
             });
@@ -174,16 +180,10 @@
             let videoNumber = document.getElementById("videoNumber").value;
             let videos = JSON.parse(localStorage.getItem("savedVideos")) || [];
 
-            // Extract only the number part from the input
-            if (videoNumber.startsWith("Video #")) {
-                videoNumber = videoNumber.split("#")[1].trim(); // Extract the number
-            }
-
-            // Check if valid number is entered
             if (videoNumber >= 1 && videoNumber <= videos.length) {
-                videos.splice(videoNumber - 1, 1); // Delete video by number
+                videos.splice(videoNumber - 1, 1);
                 localStorage.setItem("savedVideos", JSON.stringify(videos));
-                displayVideos(); // Update video list after delete
+                displayVideos();
                 alert("Video deleted successfully!");
             } else {
                 alert("Invalid video number!");
