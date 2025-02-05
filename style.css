@@ -34,7 +34,7 @@
   .text {
     font-size: 24px; 
     font-weight: bold; 
-    margin-left: 20px; 
+    margin-left: 20px; try
   }
 
   .navbar {
@@ -47,7 +47,7 @@
     padding: 10px;
 }
 
-.nav-link, .nav1-link, .nav-item, .nav-item vedios {
+.nav-link, .nav1-link, .nav-item, .nav-item vedios, nav-item movies {
     text-decoration: none;
     padding: 5px;
     color: white; /* Text color set to white */
