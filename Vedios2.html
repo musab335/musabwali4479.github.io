@@ -1,33 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>|
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Movie Manager</title>
+    <title>MovieBox Manager</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #000; /* Black background for better movie experience */
+            background-color: #000;
             text-align: center;
             padding: 0;
             margin: 0;
         }
         .video-container {
             width: 100%;
-            max-width: 1200px; /* Increased width */
+            max-width: 1200px;
             margin: auto;
             background: black;
             padding: 0;
             border-radius: 10px;
         }
         h1 {
-            color: #fff; /* White text for better contrast */
+            color: #fff;
             padding: 20px;
         }
         .video-wrapper {
             position: relative;
             width: 100%;
-            height: 650px; /* Increased height */
+            height: 650px;
             margin-bottom: 10px;
             background: black;
         }
@@ -37,7 +37,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            border-radius: 0px; /* Remove rounded borders */
+            border-radius: 0px;
         }
         .video-input {
             margin-top: 20px;
@@ -82,19 +82,19 @@
         }
         @media (max-width: 768px) {
             .video-wrapper {
-                height: 500px; /* Adjusted height for smaller screens */
+                height: 500px;
             }
         }
         @media (max-width: 480px) {
             .video-wrapper {
-                height: 400px; /* Further adjusted height for mobile */
+                height: 400px;
             }
         }
     </style>
 </head>
 <body>
 
-    <h1>Wali Movies World</h1>
+    <h1>MovieBox Movies</h1>
 
     <div class="video-container" id="videoContainer">
         <!-- Movies will be added here dynamically -->
@@ -102,7 +102,7 @@
 
     <div class="video-input">
         <input type="text" id="videoLink" placeholder="Paste MovieBox Link Here">
-        <button class="add-btn" onclick="addVideo()">Add Movie</button>
+        <button class="add-btn" onclick="addMovieBoxVideo()">Add Movie</button>
     </div>
 
     <div class="login-container">
@@ -112,7 +112,7 @@
 
     <div id="deleteSection" style="display:none; margin-top: 20px;">
         <input type="text" id="videoNumber" placeholder="Enter Movie # to Delete">
-        <button class="delete-btn" onclick="deleteVideoByNumber()">Delete Movie</button>
+        <button class="delete-btn" onclick="deleteMovieBoxVideo()">Delete Movie</button>
     </div>
 
     <script>
@@ -124,35 +124,35 @@
                 document.querySelector(".video-input").style.display = "block";
                 document.querySelector(".login-container").style.display = "none";
                 document.getElementById("deleteSection").style.display = "block";
-                displayVideos();
+                displayMovieBoxVideos();
             } else {
                 alert("Wrong Password!");
             }
         }
 
-        function addVideo() {
+        function addMovieBoxVideo() {
             let link = document.getElementById("videoLink").value;
 
             if (link.startsWith("https://v.moviebox.ng/")) {
-                saveVideos(link);
-                displayVideos();
+                saveMovieBoxVideos(link);
+                displayMovieBoxVideos();
             } else {
                 alert("Invalid MovieBox Link!");
             }
         }
 
-        function saveVideos(embedURL) {
-            let videos = JSON.parse(localStorage.getItem("savedVideos")) || [];
-            videos.unshift(embedURL);
-            localStorage.setItem("savedVideos", JSON.stringify(videos));
+        function saveMovieBoxVideos(embedURL) {
+            let movieboxVideos = JSON.parse(localStorage.getItem("movieboxVideos")) || [];
+            movieboxVideos.unshift(embedURL);
+            localStorage.setItem("movieboxVideos", JSON.stringify(movieboxVideos));
         }
 
-        function displayVideos() {
-            let videos = JSON.parse(localStorage.getItem("savedVideos")) || [];
+        function displayMovieBoxVideos() {
+            let movieboxVideos = JSON.parse(localStorage.getItem("movieboxVideos")) || [];
             let videoContainer = document.getElementById("videoContainer");
             videoContainer.innerHTML = "";
 
-            videos.forEach((url, index) => {
+            movieboxVideos.forEach((url, index) => {
                 let wrapperDiv = document.createElement("div");
                 wrapperDiv.classList.add("video-wrapper");
 
@@ -171,25 +171,25 @@
             });
         }
 
-        function deleteVideoByNumber() {
+        function deleteMovieBoxVideo() {
             let videoNumber = document.getElementById("videoNumber").value;
-            let videos = JSON.parse(localStorage.getItem("savedVideos")) || [];
+            let movieboxVideos = JSON.parse(localStorage.getItem("movieboxVideos")) || [];
 
             if (videoNumber.startsWith("Movie #")) {
                 videoNumber = videoNumber.split("#")[1].trim();
             }
 
-            if (videoNumber >= 1 && videoNumber <= videos.length) {
-                videos.splice(videoNumber - 1, 1);
-                localStorage.setItem("savedVideos", JSON.stringify(videos));
-                displayVideos();
+            if (videoNumber >= 1 && videoNumber <= movieboxVideos.length) {
+                movieboxVideos.splice(videoNumber - 1, 1);
+                localStorage.setItem("movieboxVideos", JSON.stringify(movieboxVideos));
+                displayMovieBoxVideos();
                 alert("Movie deleted successfully!");
             } else {
                 alert("Invalid movie number!");
             }
         }
 
-        window.onload = displayVideos;
+        window.onload = displayMovieBoxVideos;
     </script>
 
 </body>
