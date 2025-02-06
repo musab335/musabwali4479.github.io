@@ -3,61 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Video Manager</title>
+    <title>Wali Musics World</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #000; /* بلیک بیک گراؤنڈ */
+            background-color: #000;
             text-align: center;
             padding: 0;
             margin: 0;
         }
-
-        .video-container {
+        .video-container, #youtube-videos {
             width: 100%;
-            max-width: 100vw;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            padding: 0;
-            margin: 0;
+            max-width: 1200px;
+            margin: auto;
+            background: black;
+            padding: 20px;
+            border-radius: 10px;
         }
-
+        h1 {
+            color: #fff;
+            padding: 20px;
+        }
         .video-wrapper {
-            width: 100%;
-            max-width: 100vw;
-            height: 90vh; /* ویڈیو کو تقریباً فل اسکرین کریں */
             position: relative;
+            width: 100%;
+            height: 350px;
+            margin-bottom: 10px;
             background: black;
         }
-
         .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            border: none;
+            border-radius: 0px;
         }
-
         .video-number {
-            display: none; /* ویڈیو نمبر کو ہٹا دیا گیا */
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+            margin-bottom: 10px;
         }
-
-        .video-input, .login-container, #deleteSection {
-            text-align: center;
+        .video-input {
             margin-top: 20px;
+            display: none;
         }
-
         input {
             width: 60%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
         }
-
         button {
             padding: 10px 20px;
             border: none;
@@ -66,45 +63,42 @@
             border-radius: 5px;
             cursor: pointer;
             margin-top: 5px;
-            transition: background 0.3s, transform 0.2s;
         }
-
-        button:hover {
-            transform: scale(1.05);
-        }
-
         .add-btn {
             background: green;
         }
-
+        .add-btn:hover {
+            background: darkgreen;
+        }
         .delete-btn {
             background: red;
         }
-
-        .login-container input {
-            width: 50%;
+        .delete-btn:hover {
+            background: darkred;
         }
-
-        /* موبائل کے لیے */
-        @media (max-width: 768px) {
-            .video-wrapper {
-                height: 50vh; /* موبائل پر ویڈیو کا سائز تھوڑا کم کریں */
-            }
-            input {
-                width: 80%;
-            }
+        .login-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .video-number {
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
 
-    <div class="video-container" id="videoContainer">
-        <!-- ویڈیوز یہاں آئیں گی -->
+    <h1>Wali Musics World</h1>
+
+    <div id="youtube-videos">
+        <!-- YouTube ki latest videos yahan load hongi -->
     </div>
 
-    <div class="video-input" style="display:none;">
+    <div class="video-input">
         <input type="text" id="videoLink" placeholder="Paste YouTube Link Here">
-        <button class="add-btn" onclick="addVideo()">Add Video</button>
+        <button class="add-btn" onclick="addVideo()">Add Movie</button>
     </div>
 
     <div class="login-container">
@@ -112,13 +106,13 @@
         <button onclick="checkAdmin()">Login as Admin</button>
     </div>
 
-    <div id="deleteSection" style="display:none;">
-        <input type="text" id="videoNumber" placeholder="Enter Video # to Delete">
-        <button class="delete-btn" onclick="deleteVideoByNumber()">Delete Video</button>
+    <div id="deleteSection" style="display:none; margin-top: 20px;">
+        <input type="text" id="videoNumber" placeholder="Enter vedio # to Delete">
+        <button class="delete-btn" onclick="deleteVideoByNumber()">Delete Movie</button>
     </div>
 
     <script>
-        let adminPassword = "musabwali4479";
+        let adminPassword = "musabwali4479"; // Change this to your password
 
         function checkAdmin() {
             let inputPass = document.getElementById("adminPass").value;
@@ -134,21 +128,24 @@
 
         function addVideo() {
             let link = document.getElementById("videoLink").value;
-            let videoID = "";
 
-            if (link.includes("v=")) {
-                videoID = link.split("v=")[1].split("&")[0];
-            } else if (link.includes("youtu.be/")) {
-                videoID = link.split("youtu.be/")[1].split("?")[0];
-            }
-
-            if (videoID) {
-                let embedURL = "https://www.youtube.com/embed/" + videoID;
+            if (link.includes("youtube.com/watch?v=") || link.includes("youtu.be/")) {
+                let embedURL = convertToEmbed(link);
                 saveVideos(embedURL);
                 displayVideos();
             } else {
                 alert("Invalid YouTube Link!");
             }
+        }
+
+        function convertToEmbed(url) {
+            let videoId = "";
+            if (url.includes("youtube.com/watch?v=")) {
+                videoId = url.split("v=")[1].split("&")[0];
+            } else if (url.includes("youtu.be/")) {
+                videoId = url.split("youtu.be/")[1].split("?")[0];
+            }
+            return `https://www.youtube.com/embed/${videoId}`;
         }
 
         function saveVideos(embedURL) {
@@ -159,10 +156,10 @@
 
         function displayVideos() {
             let videos = JSON.parse(localStorage.getItem("savedVideos")) || [];
-            let videoContainer = document.getElementById("videoContainer");
+            let videoContainer = document.getElementById("youtube-videos");
             videoContainer.innerHTML = "";
 
-            videos.forEach(url => {
+            videos.forEach((url, index) => {
                 let wrapperDiv = document.createElement("div");
                 wrapperDiv.classList.add("video-wrapper");
 
@@ -171,6 +168,11 @@
                 iframe.frameBorder = "0";
                 iframe.allowFullscreen = true;
 
+                let numberText = document.createElement("div");
+                numberText.classList.add("video-number");
+                numberText.innerText = `Movie #${index + 1}`;
+
+                wrapperDiv.appendChild(numberText);
                 wrapperDiv.appendChild(iframe);
                 videoContainer.appendChild(wrapperDiv);
             });
@@ -180,17 +182,51 @@
             let videoNumber = document.getElementById("videoNumber").value;
             let videos = JSON.parse(localStorage.getItem("savedVideos")) || [];
 
+            if (videoNumber.startsWith("Movie #")) {
+                videoNumber = videoNumber.split("#")[1].trim();
+            }
+
             if (videoNumber >= 1 && videoNumber <= videos.length) {
                 videos.splice(videoNumber - 1, 1);
                 localStorage.setItem("savedVideos", JSON.stringify(videos));
                 displayVideos();
-                alert("Video deleted successfully!");
+                alert("Movie deleted successfully!");
             } else {
-                alert("Invalid video number!");
+                alert("Invalid movie number!");
             }
         }
 
-        window.onload = displayVideos;
+        const apiKey = "AIzaSyCrswrXSVUKkfVR-xsJm8LIorhajnAnQ_g"; // Aapki API Key
+        const channelId = "UCZ6G1RqcPN26HO2jwVVbTLQ"; // Aapka YouTube Channel ID
+        const maxResults = 5; // Kitni latest videos dikhani hain
+
+        async function fetchYouTubeVideos() {
+            const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=${maxResults}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                let videosHtml = "";
+                data.items.forEach(item => {
+                    if (item.id.videoId) {
+                        videosHtml += `
+                            <div class="video-wrapper">
+                                <h3 style="color: white;">${item.snippet.title}</h3>
+                                <iframe src="https://www.youtube.com/embed/${item.id.videoId}" 
+                                frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        `;
+                    }
+                });
+
+                document.getElementById("youtube-videos").innerHTML += videosHtml;
+            } catch (error) {
+                console.error("YouTube API Error:", error);
+            }
+        }
+
+        fetchYouTubeVideos();
     </script>
 
 </body>
