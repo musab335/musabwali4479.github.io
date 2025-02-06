@@ -69,7 +69,7 @@
     Your browser does not support the video tag.
   </video>
 
-  <form action="home.html" method="GET">
+  <form id="signup-form">
     <h2>Sign-Up</h2>
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" placeholder="Enter your name" required>
@@ -82,5 +82,33 @@
 
     <button type="submit">Submit</button>
   </form>
+
+  <!-- EmailJS Script -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    (function(){
+        emailjs.init("J4dIgZ-LzMGvbf7tC"); // Aapka EmailJS Public Key
+
+        document.getElementById("signup-form").addEventListener("submit", function(event){
+            event.preventDefault(); // Form reload hone se rokein
+            
+            let user_name = document.getElementById("name").value;
+            let user_email = document.getElementById("email").value;
+
+            let params = {
+                user_name: user_name,
+                user_email: user_email
+            };
+
+            emailjs.send("service_3af6kd6", "template_yke1k38", params)
+                .then(function(response) {
+                    // Redirect to home page immediately after successful submission
+                    window.location.href = "home.html"; // Replace with actual home page URL
+                }, function(error) {
+                    alert("Error! Unable to send confirmation email.");
+                });
+        });
+    })();
+  </script>
 </body>
 </html>
