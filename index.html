@@ -133,29 +133,7 @@
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
 </script>
-   <script type="module">
-        // Firebase V9 کے مطابق Firebase کو ایمپورٹ کریں
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js";
-        import { getAuth } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js";
-        
-        // Firebase کنفیگریشن
-        const firebaseConfig = {
-            apiKey: "AIzaSyDU8o0HRYABXsMAK_FA6rI5_imEQsdbI7Y",
-            authDomain: "musab-wali.firebaseapp.com", 
-            projectId: "musab-wali",
-            storageBucket: "musab-wali.appspot.com", 
-            messagingSenderId: "555569903059", 
-            appId: "1:555569903059:web:8535e6c55b42b38e16eb26"
-        };
-
-        // Firebase کو initialize کریں
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // اب آپ یہاں Firebase کی خدمات جیسے Authentication یا Firestore استعمال کر سکتے ہیں
-    </script>
+  
   
 </body>
 </html>
