@@ -26,7 +26,7 @@ Follow these steps to run the project locally:
 
 bash
 Clone the repository
-git clone https://github.com/your-username/musicwave.git
+git clone https://musab335.github.io/musabwali4479.github.io/
 
  Navigate to the project directory
 cd GB SONGS
