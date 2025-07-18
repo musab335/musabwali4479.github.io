@@ -3,465 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HarmonyHub | Login</title>
+    <title>GB Songs | Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <style>
-        :root {
-            --primary: #6c5ce7;
-            --secondary: #a29bfe;
-            --dark: #2d3436;
-            --light: #f5f6fa;
-            --accent: #fd79a8;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        body {
-            background-color: var(--dark);
-            color: var(--light);
-            min-height: 100vh;
-            overflow: hidden;
-        }
-        
-        .container {
-            display: flex;
-            height: 100vh;
-        }
-        
-        .animation-container {
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .login-container {
-            width: 400px;
-            background: rgba(45, 52, 54, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            z-index: 10;
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .logo h1 {
-            font-size: 2.5rem;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-        }
-        
-        .logo p {
-            color: var(--secondary);
-            font-size: 0.9rem;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--secondary);
-            font-size: 0.9rem;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-            color: var(--light);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.15);
-        }
-        
-        .remember-forgot {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-        }
-        
-        .remember-me {
-            display: flex;
-            align-items: center;
-        }
-        
-        .remember-me input {
-            margin-right: 8px;
-        }
-        
-        .forgot-password a {
-            color: var(--secondary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .forgot-password a:hover {
-            color: var(--accent);
-        }
-        
-        .login-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-        }
-        
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
-        }
-        
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 20px 0;
-            color: var(--secondary);
-            font-size: 0.9rem;
-        }
-        
-        .divider::before, .divider::after {
-            content: "";
-            flex: 1;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .divider::before {
-            margin-right: 10px;
-        }
-        
-        .divider::after {
-            margin-left: 10px;
-        }
-        
-        .social-login {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .social-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .social-btn:hover {
-            transform: translateY(-3px);
-        }
-        
-        .google-btn:hover {
-            background: #DB4437;
-            border-color: #DB4437;
-        }
-        
-        .linkedin-btn:hover {
-            background: #0077B5;
-            border-color: #0077B5;
-        }
-        
-        .github-btn:hover {
-            background: #333;
-            border-color: #333;
-        }
-        
-        .signup-link {
-            text-align: center;
-            font-size: 0.9rem;
-            color: var(--secondary);
-        }
-        
-        .signup-link a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-        
-        .signup-link a:hover {
-            color: var(--accent);
-        }
-        
-        /* 3D Animation Elements */
-        .music-note {
-            position: absolute;
-            opacity: 0.7;
-            animation: float 6s infinite ease-in-out;
-        }
-        
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-20px) rotate(5deg);
-            }
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .animation-container {
-                display: none;
-            }
-            
-            .login-container {
-                width: 100%;
-                padding: 30px 20px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="animation-container" id="animation-container">
-            <!-- 3D animated music notes will be added here with JavaScript -->
-        </div>
-        
-        <div class="login-container">
-            <div class="logo">
-                <h1>gb songs</h1>
-                <p>Your gateway to musical inspiration</p>
-            </div>
-            
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="Enter your email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" required>
-                </div>
-                
-                <div class="remember-forgot">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember">
-                        <label for="remember">Remember me</label>
-                    </div>
-                    <div class="forgot-password">
-                        <a href="#">Forgot password?</a>
-                    </div>
-                </div>
-                
-                <button type="submit" class="login-btn">Login</button>
-                
-                <div class="divider">
-                    Or continue with
-                </div>
-                
-                <div class="social-login">
-                    <div class="social-btn google-btn" id="googleBtn">
-                        <i class="fab fa-google"></i>
-                    </div>
-                    <div class="social-btn linkedin-btn">
-                        <i class="fab fa-linkedin-in"></i>
-                    </div>
-                    <div class="social-btn github-btn">
-                        <i class="fab fa-github"></i>
-                    </div>
-                </div>
-                
-                <div class="signup-link">
-                    Don't have an account? <a href="#">Sign up</a>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
-    <script>
-        // Initialize 3D background
-        VANTA.WAVES({
-            el: "#animation-container",
-            color: 0x4a3ce7,
-            waveHeight: 20,
-            shininess: 50,
-            waveSpeed: 1.2,
-            zoom: 0.8
-        });
-
-        // Create floating music notes
-        const container = document.getElementById('animation-container');
-        const noteIcons = ['♪', '♫', '♩', '♬', '♭'];
-        
-        function createMusicNote() {
-            const note = document.createElement('div');
-            note.className = 'music-note';
-            note.textContent = noteIcons[Math.floor(Math.random() * noteIcons.length)];
-            note.style.left = `${Math.random() * 100}%`;
-            note.style.top = `${Math.random() * 100}%`;
-            note.style.fontSize = `${Math.random() * 20 + 10}px`;
-            note.style.animationDuration = `${Math.random() * 6 + 4}s`;
-            note.style.animationDelay = `${Math.random() * 2}s`;
-            container.appendChild(note);
-        }
-        
-        // Create multiple notes
-        for (let i = 0; i < 15; i++) {
-            createMusicNote();
-        }
-        
-        // Google Sign-In
-        document.getElementById('googleBtn').addEventListener('click', () => {
-            google.accounts.id.prompt();
-        });
-        
-        // Initialize Google Identity Services
-        google.accounts.id.initialize({
-            client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
-            callback: handleCredentialResponse
-        });
-        
-        function handleCredentialResponse(response) {
-            console.log('Google sign-in response:', response);
-            // Handle the sign-in response here
-            // You would typically send this to your backend for verification
-        }
-        
-        // LinkedIn Sign-In would require their SDK
-        // GitHub Sign-In would typically use OAuth
-        
-        // Form submission
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            // Here you would typically send this data to your backend
-            console.log('Login attempt with:', { email, password });
-            
-            // Simulate a successful login
-            alert('Login functionality would connect to your backend API');
-        });
-    </script>
-</body>
-</html>
-Key Features:
-Modern UI Design:
-
-Gradient accents and glass-morphism effect
-
-Responsive layout that works on mobile and desktop
-
-Clean typography with Poppins font
-
-Social Authentication:
-
-Google Sign-In (using Google Identity Services)
-
-LinkedIn login option
-
-GitHub login option
-
-Proper hover effects for each provider
-
-3D Animation Elements:
-
-Interactive wave background using Vanta.js
-
-Floating animated music notes (♪ ♫ ♩ ♬ ♭)
-
-Smooth animations and transitions
-
-Professional Form Elements:
-
-Email and password fields with proper validation
-
-"Remember me" and "Forgot password" options
-
-Gradient login button with hover effect
-
-Branding:
-
-Custom logo area for your music website
-
-Cohesive color scheme (purple/pink accent colors)
-
-Implementation Notes:
-Replace YOUR_GOOGLE_CLIENT_ID with your actual Google OAuth client ID
-
-For LinkedIn and GitHub authentication, you'll need to:
-
-Register your application with their developer platforms
-
-Implement the OAuth flow (typically redirect-based)
-
-The form currently just logs to console - connect it to your backend API
-
-The 3D effects use Three.js via Vanta.js - no additional installation needed
-
-This design provides a premium, music-themed login experience that will impress your users while maintaining all the functionality you requested.
-
-ADD CONTINOU WITH GOOGLE ,LINKEDIN ,GITHUB ACCOUNT
-Enhanced Login Page with "Continue With" Social Auth Options
-I'll upgrade the previous design to include proper "Continue with" buttons for Google, LinkedIn, and GitHub with full authentication flows. Here's the improved version:
-
-Complete HTML Implementation
-html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HarmonyHub | Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Identity Services -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <!-- LinkedIn SDK -->
-    <script type="text/javascript" src="https://platform.linkedin.com/in.js">
-        api_key: [YOUR_LINKEDIN_CLIENT_ID]
-        authorize: true
-    </script>
     <style>
         :root {
             --primary: #6c5ce7;
@@ -639,13 +184,12 @@ html
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
             font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
+            border: none;
         }
         
         .social-btn:hover {
@@ -659,7 +203,7 @@ html
         
         .google-btn {
             background: var(--google-red);
-            border-color: var(--google-red);
+            box-shadow: 0 2px 5px rgba(219, 68, 55, 0.2);
         }
         
         .google-btn:hover {
@@ -668,7 +212,7 @@ html
         
         .linkedin-btn {
             background: var(--linkedin-blue);
-            border-color: var(--linkedin-blue);
+            box-shadow: 0 2px 5px rgba(0, 119, 181, 0.2);
         }
         
         .linkedin-btn:hover {
@@ -677,7 +221,7 @@ html
         
         .github-btn {
             background: var(--github-black);
-            border-color: var(--github-black);
+            box-shadow: 0 2px 5px rgba(51, 51, 51, 0.2);
         }
         
         .github-btn:hover {
@@ -699,6 +243,63 @@ html
         
         .signup-link a:hover {
             color: var(--accent);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+        }
+        
+        .modal-content h2 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .modal-content p {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .modal-content button {
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .modal-primary-btn {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .modal-secondary-btn {
+            background: #ddd;
+            margin-left: 10px;
         }
         
         /* 3D Animation Elements */
@@ -742,7 +343,7 @@ html
         
         <div class="login-container">
             <div class="logo">
-                <h1>HarmonyHub</h1>
+                <h1>GB Songs</h1>
                 <p>Your gateway to musical inspiration</p>
             </div>
             
@@ -763,7 +364,7 @@ html
                         <label for="remember">Remember me</label>
                     </div>
                     <div class="forgot-password">
-                        <a href="#">Forgot password?</a>
+                        <a href="#" id="forgotPasswordLink">Forgot password?</a>
                     </div>
                 </div>
                 
@@ -802,9 +403,41 @@ html
                 </div>
                 
                 <div class="signup-link">
-                    Don't have an account? <a href="#">Sign up</a>
+                    Don't have an account? <a href="#" id="signupLink">Sign up</a>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <h2>Reset Password</h2>
+            <p>Enter your email to receive a password reset link:</p>
+            <input type="email" id="resetEmail" placeholder="Your email">
+            <button id="sendResetLink" class="modal-primary-btn">Send Reset Link</button>
+            <button id="closeForgotPassword" class="modal-secondary-btn">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <h2>Create Account</h2>
+            <div style="margin-bottom:15px;">
+                <label style="display:block; margin-bottom:5px; color: var(--dark);">Full Name</label>
+                <input type="text" id="signupName" placeholder="Your name">
+            </div>
+            <div style="margin-bottom:15px;">
+                <label style="display:block; margin-bottom:5px; color: var(--dark);">Email</label>
+                <input type="email" id="signupEmail" placeholder="Your email">
+            </div>
+            <div style="margin-bottom:15px;">
+                <label style="display:block; margin-bottom:5px; color: var(--dark);">Password</label>
+                <input type="password" id="signupPassword" placeholder="Create password">
+            </div>
+            <button id="createAccountBtn" class="modal-primary-btn" style="width:100%;">Create Account</button>
+            <button id="closeSignupModal" class="modal-secondary-btn" style="width:100%; margin-top:10px;">Cancel</button>
         </div>
     </div>
 
@@ -848,63 +481,86 @@ html
             // The ID token you need to send to your backend
             const id_token = response.credential;
             
-            // Here you would typically send this to your backend for verification
-            fetch('/api/auth/google', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ token: id_token })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                // Redirect user or update UI based on response
-                window.location.href = '/dashboard';
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+            // Store the token and redirect to index.html
+            localStorage.setItem('userToken', id_token);
+            window.location.href = 'index.html';
         }
         
-        // LinkedIn Sign-In
-        document.getElementById('linkedinBtn').addEventListener('click', function() {
-            // LinkedIn requires you to implement OAuth 2.0 flow
-            // This would typically redirect to LinkedIn's auth page
-            const linkedinAuthUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=YOUR_LINKEDIN_CLIENT_ID&redirect_uri=${encodeURIComponent('YOUR_REDIRECT_URI')}&state=random_string&scope=r_liteprofile%20r_emailaddress`;
-            window.location.href = linkedinAuthUrl;
+        // Initialize Google Sign-In
+        document.getElementById('googleBtn').addEventListener('click', function() {
+            google.accounts.id.prompt();
         });
         
-        // GitHub Sign-In
+        // LinkedIn Sign-In (placeholder)
+        document.getElementById('linkedinBtn').addEventListener('click', function() {
+            alert('LinkedIn login would be implemented here with proper OAuth');
+        });
+        
+        // GitHub Sign-In (placeholder)
         document.getElementById('githubBtn').addEventListener('click', function() {
-            // GitHub OAuth flow
-            const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=YOUR_GITHUB_CLIENT_ID&redirect_uri=${encodeURIComponent('YOUR_REDIRECT_URI')}&scope=user:email`;
-            window.location.href = githubAuthUrl;
+            alert('GitHub login would be implemented here with proper OAuth');
         });
         
         // Form submission
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
-            // Here you would typically send this data to your backend
-            fetch('/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                // Redirect user or update UI based on response
-                window.location.href = '/dashboard';
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+            if(email && password) {
+                // In a real app, you would send this to your backend
+                localStorage.setItem('userToken', 'dummy-token-for-demo');
+                window.location.href = 'index.html';
+            } else {
+                alert('Please enter both email and password');
+            }
+        });
+        
+        // Forgot Password functionality
+        document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('forgotPasswordModal').style.display = 'flex';
+        });
+        
+        document.getElementById('closeForgotPassword').addEventListener('click', function() {
+            document.getElementById('forgotPasswordModal').style.display = 'none';
+        });
+        
+        document.getElementById('sendResetLink').addEventListener('click', function() {
+            const email = document.getElementById('resetEmail').value;
+            if(email) {
+                alert('Password reset link has been sent to ' + email);
+                document.getElementById('forgotPasswordModal').style.display = 'none';
+            } else {
+                alert('Please enter your email address');
+            }
+        });
+        
+        // Sign Up functionality
+        document.getElementById('signupLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('signupModal').style.display = 'flex';
+        });
+        
+        document.getElementById('closeSignupModal').addEventListener('click', function() {
+            document.getElementById('signupModal').style.display = 'none';
+        });
+        
+        document.getElementById('createAccountBtn').addEventListener('click', function() {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            if(name && email && password) {
+                alert('Account created successfully for ' + name);
+                document.getElementById('signupModal').style.display = 'none';
+             
+                // Auto-login for demo
+                localStorage.setItem('userToken', 'dummy-token-for-demo');
+                window.location.href = 'index.html';
+            } else {
+                alert('Please fill all fields');
+            }
         });
     </script>
 </body>
