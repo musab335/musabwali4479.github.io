@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GB Songs | Login</title>
+    <title>GB Songs | Sign Up</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         :root {
             --primary: #6c5ce7;
@@ -17,6 +18,8 @@
             --google-red: #DB4437;
             --linkedin-blue: #0077B5;
             --github-black: #333;
+            --success: #00b894;
+            --error: #d63031;
         }
         
         * {
@@ -44,8 +47,8 @@
             overflow: hidden;
         }
         
-        .login-container {
-            width: 400px;
+        .signup-container {
+            width: 450px;
             background: rgba(45, 52, 54, 0.8);
             backdrop-filter: blur(10px);
             padding: 40px;
@@ -102,34 +105,7 @@
             background: rgba(255, 255, 255, 0.15);
         }
         
-        .remember-forgot {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-        }
-        
-        .remember-me {
-            display: flex;
-            align-items: center;
-        }
-        
-        .remember-me input {
-            margin-right: 8px;
-        }
-        
-        .forgot-password a {
-            color: var(--secondary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .forgot-password a:hover {
-            color: var(--accent);
-        }
-        
-        .login-btn {
+        .signup-btn {
             width: 100%;
             padding: 12px;
             background: linear-gradient(to right, var(--primary), var(--accent));
@@ -143,7 +119,7 @@
             margin-bottom: 20px;
         }
         
-        .login-btn:hover {
+        .signup-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
         }
@@ -228,78 +204,37 @@
             box-shadow: 0 5px 15px rgba(51, 51, 51, 0.4);
         }
         
-        .signup-link {
+        .login-link {
             text-align: center;
             font-size: 0.9rem;
             color: var(--secondary);
         }
         
-        .signup-link a {
+        .login-link a {
             color: var(--primary);
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
         }
         
-        .signup-link a:hover {
+        .login-link a:hover {
             color: var(--accent);
         }
         
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
+        #message {
+            margin: 15px 0;
+            text-align: center;
+            font-weight: 600;
+            color: var(--success);
+            font-size: 0.9rem;
         }
         
-        .modal-content {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            width: 400px;
-            max-width: 90%;
-        }
-        
-        .modal-content h2 {
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-        
-        .modal-content p {
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-        
-        .modal-content input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .modal-content button {
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            border: none;
-        }
-        
-        .modal-primary-btn {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .modal-secondary-btn {
-            background: #ddd;
-            margin-left: 10px;
+        #error {
+            margin: 15px 0;
+            text-align: center;
+            font-weight: 600;
+            color: var(--error);
+            font-size: 0.9rem;
         }
         
         /* 3D Animation Elements */
@@ -328,7 +263,7 @@
                 display: none;
             }
             
-            .login-container {
+            .signup-container {
                 width: 100%;
                 padding: 30px 20px;
             }
@@ -341,34 +276,32 @@
             <!-- 3D animated music notes will be added here with JavaScript -->
         </div>
         
-        <div class="login-container">
+        <div class="signup-container">
             <div class="logo">
                 <h1>GB Songs</h1>
                 <p>Your gateway to musical inspiration</p>
             </div>
             
-            <form id="loginForm">
+            <form id="signupForm" autocomplete="off">
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="Enter your email" required>
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Your full name" required />
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required />
                 </div>
                 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <input type="password" id="password" name="password" placeholder="Choose a password" required />
                 </div>
                 
-                <div class="remember-forgot">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember">
-                        <label for="remember">Remember me</label>
-                    </div>
-                    <div class="forgot-password">
-                        <a href="#" id="forgotPasswordLink">Forgot password?</a>
-                    </div>
-                </div>
+                <button type="submit" class="signup-btn">Sign Up</button>
                 
-                <button type="submit" class="login-btn">Login</button>
+                <div id="message"></div>
+                <div id="error"></div>
                 
                 <div class="divider">
                     Or continue with
@@ -377,67 +310,35 @@
                 <div class="social-login">
                     <!-- Google Sign-In Button -->
                     <div id="g_id_onload"
-                        data-client_id="1064103792750-7n8hs7q1clicl7n0sifpgsgle5loq7qr.apps.googleusercontent.com"
+                        data-client_id="283715768796-sarj9vhdb6husta23s3erm11t6mqkh4b.apps.googleusercontent.com"
                         data-context="signin"
                         data-ux_mode="popup"
                         data-callback="handleGoogleSignIn"
                         data-auto_prompt="false">
                     </div>
                     
-                    <button class="social-btn google-btn" id="googleBtn">
+                    <button type="button" class="social-btn google-btn" id="googleSignInBtn">
                         <i class="fab fa-google"></i>
                         Continue with Google
                     </button>
                     
                     <!-- LinkedIn Sign-In Button -->
-                    <button class="social-btn linkedin-btn" id="linkedinBtn">
+                    <button type="button" class="social-btn linkedin-btn" id="linkedinBtn">
                         <i class="fab fa-linkedin-in"></i>
                         Continue with LinkedIn
                     </button>
                     
                     <!-- GitHub Sign-In Button -->
-                    <button class="social-btn github-btn" id="githubBtn">
+                    <button type="button" class="social-btn github-btn" id="githubBtn">
                         <i class="fab fa-github"></i>
                         Continue with GitHub
                     </button>
                 </div>
                 
-                <div class="signup-link">
-                    Don't have an account? <a href="#" id="signupLink">Sign up</a>
+                <div class="login-link">
+                    Already have an account? <a href="login.html">Log in</a>
                 </div>
             </form>
-        </div>
-    </div>
-
-    <!-- Forgot Password Modal -->
-    <div id="forgotPasswordModal" class="modal">
-        <div class="modal-content">
-            <h2>Reset Password</h2>
-            <p>Enter your email to receive a password reset link:</p>
-            <input type="email" id="resetEmail" placeholder="Your email">
-            <button id="sendResetLink" class="modal-primary-btn">Send Reset Link</button>
-            <button id="closeForgotPassword" class="modal-secondary-btn">Cancel</button>
-        </div>
-    </div>
-
-    <!-- Sign Up Modal -->
-    <div id="signupModal" class="modal">
-        <div class="modal-content">
-            <h2>Create Account</h2>
-            <div style="margin-bottom:15px;">
-                <label style="display:block; margin-bottom:5px; color: var(--dark);">Full Name</label>
-                <input type="text" id="signupName" placeholder="Your name">
-            </div>
-            <div style="margin-bottom:15px;">
-                <label style="display:block; margin-bottom:5px; color: var(--dark);">Email</label>
-                <input type="email" id="signupEmail" placeholder="Your email">
-            </div>
-            <div style="margin-bottom:15px;">
-                <label style="display:block; margin-bottom:5px; color: var(--dark);">Password</label>
-                <input type="password" id="signupPassword" placeholder="Create password">
-            </div>
-            <button id="createAccountBtn" class="modal-primary-btn" style="width:100%;">Create Account</button>
-            <button id="closeSignupModal" class="modal-secondary-btn" style="width:100%; margin-top:10px;">Cancel</button>
         </div>
     </div>
 
@@ -475,6 +376,49 @@
             createMusicNote();
         }
         
+        // Initialize EmailJS
+        emailjs.init("J4dIgZ-LzMGvbf7tC");
+
+        const signupForm = document.getElementById("signupForm");
+        const messageEl = document.getElementById("message");
+        const errorEl = document.getElementById("error");
+
+        // Handle form submit (EmailJS)
+        signupForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Clear messages
+            messageEl.textContent = "";
+            errorEl.textContent = "";
+
+            const formData = {
+                user_name: this.name.value.trim(),
+                user_email: this.email.value.trim(),
+                user_password: this.password.value.trim()
+            };
+
+            // Basic front-end validation
+            if (!formData.user_name || !formData.user_email || !formData.user_password) {
+                errorEl.textContent = "Please fill all fields.";
+                return;
+            }
+
+            emailjs.send("service_3af6kd6", "template_yke1k38", formData)
+                .then(() => {
+                    messageEl.textContent = "Thank you for signing up! Please check your email.";
+                    signupForm.reset();
+                    
+                    // Redirect after successful signup
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                })
+                .catch((error) => {
+                    errorEl.textContent = "Oops! Something went wrong. Please try again.";
+                    console.error("EmailJS error:", error);
+                });
+        });
+
         // Google Sign-In Handler
         function handleGoogleSignIn(response) {
             console.log('Google sign-in response:', response);
@@ -487,7 +431,7 @@
         }
         
         // Initialize Google Sign-In
-        document.getElementById('googleBtn').addEventListener('click', function() {
+        document.getElementById('googleSignInBtn').addEventListener('click', function() {
             google.accounts.id.prompt();
         });
         
@@ -499,68 +443,6 @@
         // GitHub Sign-In (placeholder)
         document.getElementById('githubBtn').addEventListener('click', function() {
             alert('GitHub login would be implemented here with proper OAuth');
-        });
-        
-        // Form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            if(email && password) {
-                // In a real app, you would send this to your backend
-                localStorage.setItem('userToken', 'dummy-token-for-demo');
-                window.location.href = 'home.html';
-            } else {
-                alert('Please enter both email and password');
-            }
-        });
-        
-        // Forgot Password functionality
-        document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('forgotPasswordModal').style.display = 'flex';
-        });
-        
-        document.getElementById('closeForgotPassword').addEventListener('click', function() {
-            document.getElementById('forgotPasswordModal').style.display = 'none';
-        });
-        
-        document.getElementById('sendResetLink').addEventListener('click', function() {
-            const email = document.getElementById('resetEmail').value;
-            if(email) {
-                alert('Password reset link has been sent to ' + email);
-                document.getElementById('forgotPasswordModal').style.display = 'none';
-            } else {
-                alert('Please enter your email address');
-            }
-        });
-        
-        // Sign Up functionality
-        document.getElementById('signupLink').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('signupModal').style.display = 'flex';
-        });
-        
-        document.getElementById('closeSignupModal').addEventListener('click', function() {
-            document.getElementById('signupModal').style.display = 'none';
-        });
-        
-        document.getElementById('createAccountBtn').addEventListener('click', function() {
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            
-            if(name && email && password) {
-                alert('Account created successfully for ' + name);
-                document.getElementById('signupModal').style.display = 'none';
-             
-                // Auto-login for demo
-                localStorage.setItem('userToken', 'dummy-token-for-demo');
-                window.location.href = 'home.html';
-            } else {
-                alert('Please fill all fields');
-            }
         });
     </script>
 </body>
